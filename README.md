@@ -21,7 +21,7 @@ GitHub Packages Maven Registry；消费方需要配置 GitHub Packages 仓库和
 <dependency>
   <groupId>com.eduskit</groupId>
   <artifactId>server-sdk</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
 </dependency>
 ```
 
