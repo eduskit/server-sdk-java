@@ -14,18 +14,23 @@ Java 11+ B 端 Server SDK。`sdk.client()` 调课堂 server-api，`sdk.whiteboar
 mvn -s .mvn/settings.xml test
 ```
 
-`.mvn/settings.xml` 配置了阿里云镜像（公共依赖在部分网络会 403）。发布后，Java 包默认发布到本仓库的
-GitHub Packages Maven Registry；消费方需要配置 GitHub Packages 仓库和只读 token：
+`.mvn/settings.xml` 配置了阿里云镜像（公共依赖在部分网络会 403）。
+
+Java 包发布到 Maven Central，无需额外仓库配置或认证：
 
 ```xml
 <dependency>
   <groupId>com.eduskit</groupId>
   <artifactId>server-sdk</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
 </dependency>
 ```
 
-仓库地址为 `https://maven.pkg.github.com/eduskit/server-sdk-java`，认证使用 `read:packages` 权限。
+Gradle：
+
+```groovy
+implementation 'com.eduskit:server-sdk:0.1.2'
+```
 
 ## 初始化
 
