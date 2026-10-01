@@ -41,13 +41,13 @@ public class ClassroomClient {
     private final HttpTransport http;
     Members(HttpTransport http) { this.http = http; }
     public JsonElement add(String classroomId, Map<String, Object> input) {
-      return http.request("POST", "/v1/classrooms/" + classroomId + "/members", input);
+      return http.request("POST", "/v1/classrooms/members", HttpTransport.withIdentifiers(input, Map.of("classroomId", classroomId)));
     }
     public JsonElement list(String classroomId) {
-      return http.request("GET", "/v1/classrooms/" + classroomId + "/members", null);
+      return http.request("GET", HttpTransport.withQuery("/v1/classrooms/members", Map.of("classroomId", classroomId)), null);
     }
     public JsonElement replaceStudents(String classroomId, Map<String, Object> input) {
-      return http.request("PUT", "/v1/classrooms/" + classroomId + "/members/students", input);
+      return http.request("PUT", "/v1/classrooms/members/students", HttpTransport.withIdentifiers(input, Map.of("classroomId", classroomId)));
     }
   }
 
@@ -55,13 +55,13 @@ public class ClassroomClient {
     private final HttpTransport http;
     Permissions(HttpTransport http) { this.http = http; }
     public JsonElement get(String classroomId, String eduUserId) {
-      return http.request("GET", "/v1/classrooms/" + classroomId + "/members/" + eduUserId + "/permissions", null);
+      return http.request("GET", HttpTransport.withQuery("/v1/classrooms/members/permissions", Map.of("classroomId", classroomId, "eduUserId", eduUserId)), null);
     }
     public JsonElement set(String classroomId, String eduUserId, Map<String, Object> input) {
-      return http.request("POST", "/v1/classrooms/" + classroomId + "/members/" + eduUserId + "/permissions", input);
+      return http.request("POST", "/v1/classrooms/members/permissions", HttpTransport.withIdentifiers(input, Map.of("classroomId", classroomId, "eduUserId", eduUserId)));
     }
     public JsonElement clear(String classroomId, String eduUserId, String permission, Map<String, Object> input) {
-      return http.request("DELETE", "/v1/classrooms/" + classroomId + "/members/" + eduUserId + "/permissions/" + permission, input);
+      return http.request("DELETE", HttpTransport.withQuery("/v1/classrooms/members/permissions", Map.of("classroomId", classroomId, "eduUserId", eduUserId, "permission", permission)), input);
     }
   }
 
@@ -69,13 +69,13 @@ public class ClassroomClient {
     private final HttpTransport http;
     Coursewares(HttpTransport http) { this.http = http; }
     public JsonElement list(String classroomId) {
-      return http.request("GET", "/v1/classrooms/" + classroomId + "/coursewares", null);
+      return http.request("GET", HttpTransport.withQuery("/v1/classrooms/coursewares", Map.of("classroomId", classroomId)), null);
     }
     public JsonElement bind(String classroomId, Map<String, Object> input) {
-      return http.request("POST", "/v1/classrooms/" + classroomId + "/coursewares", input);
+      return http.request("POST", "/v1/classrooms/coursewares", HttpTransport.withIdentifiers(input, Map.of("classroomId", classroomId)));
     }
     public JsonElement unbind(String classroomId, Map<String, Object> input) {
-      return http.request("DELETE", "/v1/classrooms/" + classroomId + "/coursewares", input);
+      return http.request("DELETE", HttpTransport.withQuery("/v1/classrooms/coursewares", Map.of("classroomId", classroomId)), input);
     }
   }
 
@@ -94,10 +94,10 @@ public class ClassroomClient {
       return http.request("POST", "/v1/classrooms", input);
     }
     public JsonElement start(String classroomId) {
-      return http.request("POST", "/v1/classrooms/" + classroomId + "/start", null);
+      return http.request("POST", "/v1/classrooms/start", HttpTransport.withIdentifiers(null, Map.of("classroomId", classroomId)));
     }
     public JsonElement end(String classroomId) {
-      return http.request("POST", "/v1/classrooms/" + classroomId + "/end", null);
+      return http.request("POST", "/v1/classrooms/end", HttpTransport.withIdentifiers(null, Map.of("classroomId", classroomId)));
     }
   }
 

@@ -34,28 +34,28 @@ public class WhiteboardClient {
     private final HttpTransport http;
     Recordings(HttpTransport http) { this.http = http; }
     public JsonElement start(String roomId, Map<String, Object> input) {
-      return http.request("POST", "/v1/rooms/" + roomId + "/recording/start", input);
+      return http.request("POST", "/v1/rooms/recording/start", HttpTransport.withIdentifiers(input, Map.of("roomId", roomId)));
     }
     public JsonElement stop(String roomId, Map<String, Object> input) {
-      return http.request("POST", "/v1/rooms/" + roomId + "/recording/stop", input);
+      return http.request("POST", "/v1/rooms/recording/stop", HttpTransport.withIdentifiers(input, Map.of("roomId", roomId)));
     }
     public JsonElement list(String roomId) {
-      return http.request("GET", "/v1/rooms/" + roomId + "/recordings", null);
+      return http.request("GET", HttpTransport.withQuery("/v1/rooms/recordings", Map.of("roomId", roomId)), null);
     }
     public JsonElement get(String recordingId) {
-      return http.request("GET", "/v1/recordings/" + recordingId, null);
+      return http.request("GET", HttpTransport.withQuery("/v1/recordings", Map.of("recordingId", recordingId)), null);
     }
     public JsonElement registerMediaAsset(String recordingId, Map<String, Object> input) {
-      return http.request("POST", "/v1/recordings/" + recordingId + "/media-assets", input);
+      return http.request("POST", "/v1/recordings/media-assets", HttpTransport.withIdentifiers(input, Map.of("recordingId", recordingId)));
     }
     public JsonElement deleteMediaAsset(String recordingId, String assetId) {
-      return http.request("DELETE", "/v1/recordings/" + recordingId + "/media-assets/" + assetId, null);
+      return http.request("DELETE", HttpTransport.withQuery("/v1/recordings/media-assets", Map.of("recordingId", recordingId, "assetId", assetId)), null);
     }
     public JsonElement enqueueVideoExport(String recordingId, Map<String, Object> input) {
-      return http.request("POST", "/v1/recordings/" + recordingId + "/video-exports", input);
+      return http.request("POST", "/v1/recordings/video-exports", HttpTransport.withIdentifiers(input, Map.of("recordingId", recordingId)));
     }
     public JsonElement getVideoExport(String recordingId, String jobId) {
-      return http.request("GET", "/v1/recordings/" + recordingId + "/video-exports/" + jobId, null);
+      return http.request("GET", HttpTransport.withQuery("/v1/recordings/video-exports", Map.of("recordingId", recordingId, "jobId", jobId)), null);
     }
   }
 
@@ -65,10 +65,10 @@ public class WhiteboardClient {
     public JsonElement create(String roomId, Map<String, Object> input) {
       Map<String, Object> body = input == null ? new HashMap<>() : new HashMap<>(input);
       body.put("roomId", roomId);
-      return http.request("POST", "/v1/rooms/" + roomId + "/captures", body);
+      return http.request("POST", "/v1/rooms/captures", HttpTransport.withIdentifiers(body, Map.of("roomId", roomId)));
     }
     public JsonElement list(String roomId) {
-      return http.request("GET", "/v1/rooms/" + roomId + "/captures", null);
+      return http.request("GET", HttpTransport.withQuery("/v1/rooms/captures", Map.of("roomId", roomId)), null);
     }
   }
 
@@ -79,7 +79,7 @@ public class WhiteboardClient {
       return http.request("POST", "/v1/files/convert", input);
     }
     public JsonElement getConvertJob(String jobId) {
-      return http.request("GET", "/v1/files/convert/" + jobId, null);
+      return http.request("GET", HttpTransport.withQuery("/v1/files/convert", Map.of("jobId", jobId)), null);
     }
   }
 }

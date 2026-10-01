@@ -68,7 +68,7 @@ class EduskitHttpTest {
     assertTrue(calls.contains("POST /v1/users"));
     assertEquals("app_edu", eduToken.getAsJsonObject().get("appId").getAsString());
     assertEquals(3, roomToken.getAsJsonObject().get("token").getAsString().split("\\.").length);
-    assertTrue(calls.contains("GET /v1/files/convert/job_1"));
+    assertTrue(calls.contains("GET /v1/files/convert"));
     assertEquals("wb-key", lastKey);
   }
 

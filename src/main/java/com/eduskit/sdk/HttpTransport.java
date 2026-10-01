@@ -10,8 +10,25 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+import java.util.Map;
+import java.util.HashMap;
+import java.net.URLEncoder;
 
 final class HttpTransport {
+  static String withQuery(String path, Map<String, String> identifiers) {
+    String query = identifiers.entrySet().stream()
+        .sorted(Map.Entry.comparingByKey())
+        .map(e -> URLEncoder.encode(e.getKey(), StandardCharsets.UTF_8) + "=" + URLEncoder.encode(e.getValue(), StandardCharsets.UTF_8))
+        .collect(java.util.stream.Collectors.joining("&"));
+    return path + "?" + query;
+  }
+
+  static Map<String, Object> withIdentifiers(Map<String, Object> body, Map<String, String> identifiers) {
+    Map<String, Object> result = body == null ? new HashMap<>() : new HashMap<>(body);
+    result.putAll(identifiers);
+    return result;
+  }
+
   private static final Gson GSON = new Gson();
   private final String baseUrl;
   private final String appKey;
