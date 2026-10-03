@@ -22,14 +22,14 @@ Java 包发布到 Maven Central，无需额外仓库配置或认证：
 <dependency>
   <groupId>com.eduskit</groupId>
   <artifactId>server-sdk</artifactId>
-  <version>0.1.4</version>
+  <version>0.1.5</version>
 </dependency>
 ```
 
 Gradle：
 
 ```groovy
-implementation 'com.eduskit:server-sdk:0.1.4'
+implementation 'com.eduskit:server-sdk:0.1.5'
 ```
 
 ## 初始化

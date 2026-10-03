@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WhiteboardClient {
+  public final Rooms rooms;
   public final Auth auth;
   public final Recordings recordings;
   public final Captures captures;
@@ -18,9 +19,53 @@ public class WhiteboardClient {
     this.recordings = new Recordings(http);
     this.captures = new Captures(http);
     this.files = new Files(http);
+    this.rooms = new Rooms(http);
   }
 
   public String lastTraceId() { return http.lastTraceId; }
+
+  public static class Rooms {
+    private final HttpTransport http;
+    Rooms(HttpTransport http) { this.http = http; }
+    public JsonElement schedulePrivateRoomWrites(String roomId, String requestId, String opensAt, String closesAt) {
+      return http.request("POST", "/v1/rooms/private/write-window", Map.of("roomId",roomId,"requestId",requestId,"opensAt",opensAt,"closesAt",closesAt));
+    }
+    public JsonElement initializePrivateWorkspace(String roomId, String assignmentId, String sourceSnapshotId) {
+      var body = new HashMap<String,Object>();
+      body.put("roomId", roomId); body.put("assignmentId", assignmentId); body.put("sourceSnapshotId", sourceSnapshotId);
+      return http.request("POST", "/v1/rooms/private/initializations", body);
+    }
+    public JsonElement getPrivateWorkspaceInitialization(String roomId) {
+      return http.request("POST", "/v1/rooms/private/initializations/query", Map.of("roomId", roomId));
+    }
+    public JsonElement provisionPrivateRoom(String roomId, String assignmentId) {
+      return http.request("POST", "/v1/rooms/private", Map.of("roomId", roomId, "assignmentId", assignmentId));
+    }
+    public JsonElement changePrivateRoomGrant(String roomId, Map<String,Object> input) {
+      return http.request("POST", "/v1/rooms/private/grants", HttpTransport.withIdentifiers(input, Map.of("roomId", roomId)));
+    }
+    public JsonElement getPrivateRoomAccess(String roomId, String userId) {
+      return http.request("POST", "/v1/rooms/private/access/query", Map.of("roomId", roomId, "userId", userId));
+    }
+    public JsonElement issuePrivateRoomToken(String roomId, Map<String,Object> input) {
+      return http.request("POST", "/v1/rooms/private/token", HttpTransport.withIdentifiers(input, Map.of("roomId", roomId)));
+    }
+    public JsonElement sealPrivateRoom(String roomId) {
+      return http.request("POST", "/v1/rooms/private/seal", Map.of("roomId", roomId));
+    }
+    public JsonElement createFrozenSnapshot(String roomId, String snapshotId) {
+      return http.request("POST", "/v1/rooms/private/snapshots", Map.of("roomId", roomId, "snapshotId", snapshotId));
+    }
+    public JsonElement getFrozenSnapshot(String roomId, String snapshotId) {
+      return http.request("POST", "/v1/rooms/private/snapshots/query", Map.of("roomId", roomId, "snapshotId", snapshotId));
+    }
+    public JsonElement getFrozenSnapshotDownload(String roomId, String snapshotId) {
+      return http.request("POST", "/v1/rooms/private/snapshots/download", Map.of("roomId", roomId, "snapshotId", snapshotId));
+    }
+    public JsonElement attachCourseware(String roomId, Map<String,Object> input) {
+      return http.request("POST", "/v1/rooms/coursewares", HttpTransport.withIdentifiers(input, Map.of("roomId", roomId)));
+    }
+  }
 
   public static class Auth {
     private final ClientConfig config;

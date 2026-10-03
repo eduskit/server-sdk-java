@@ -1,6 +1,7 @@
 package com.eduskit.sdk;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -29,7 +30,7 @@ final class HttpTransport {
     return result;
   }
 
-  private static final Gson GSON = new Gson();
+  private static final Gson GSON = new GsonBuilder().serializeNulls().create();
   private final String baseUrl;
   private final String appKey;
   private final String appSecret;

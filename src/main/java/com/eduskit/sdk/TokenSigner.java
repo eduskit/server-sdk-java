@@ -1,6 +1,8 @@
 package com.eduskit.sdk;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import javax.crypto.Mac;
@@ -12,7 +14,7 @@ import java.util.Base64;
 import java.util.Map;
 
 final class TokenSigner {
-  private static final Gson GSON = new Gson();
+  private static final Gson GSON = new GsonBuilder().serializeNulls().create();
   private TokenSigner() {}
 
   static JsonElement edu(ClientConfig config, Map<String, Object> input) {
@@ -40,6 +42,7 @@ final class TokenSigner {
     long expiresIn = expiry(input, 3600, "whiteboard");
     JsonObject claims = new JsonObject(); claims.addProperty("app_id", config.appId);
     claims.addProperty("room_id", roomId); claims.addProperty("role", role); claims.addProperty("source", "server_sdk");
+    claims.add("access_generation", JsonNull.INSTANCE);
     Signed signed = sign(config, userId, "eduskit", "eduskit-room", expiresIn, claims, "whiteboard");
     JsonObject out = new JsonObject(); out.addProperty("token", signed.token); out.addProperty("appId", config.appId);
     out.addProperty("roomId", roomId); out.addProperty("userId", userId); out.addProperty("role", role);
